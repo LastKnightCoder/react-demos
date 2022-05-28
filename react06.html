@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/antd@4.20.6/dist/antd.css">
   <title>Document</title>
 </head>
 
@@ -13,6 +14,7 @@
   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://unpkg.com/antd@4.20.6/dist/antd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
 
   <script type="text/babel">
@@ -21,20 +23,23 @@
       family: 'Ubuntu, 华文行楷',
       size: 14
     }
+    const { Button } = antd
     class BarChart extends React.Component {
-      componentDidMount() {
+      renderGraph = () => {
         const chart = this.refs.chart;
         const ctx = chart.getContext('2d')
         new Chart(ctx, {
           type: 'bar',
           data: this.props.data
         })
+        this.refs.btn.style.display = 'none'
       }
 
       render() {
         return (
           <div>
             <canvas ref="chart" width={this.props.width} height={this.props.height}></canvas>  
+            <Button style={{position: 'absolute', top: '10px', right: '10px'}} ref="btn" type="primary" onClick={this.renderGraph}>渲染图形</Button>
           </div>
         )
       }
