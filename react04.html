@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>React</title>
+  <link rel="stylesheet" href="https://unpkg.com/antd@4.20.6/dist/antd.css">
+  <style scoped>
+    .container {
+      --color: black;
+      --bgColor: transparent;
+      --border-color: black;
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+      width: 250px;
+      color: var(--color);
+      background-color: var(--bgColor);
+      border: 1px solid var(--border-color);
+      border-radius: 5px;
+      margin: 100px auto;
+      padding: 1em;
+      transition: all 0.2s;
+    }
+
+    .container[data-theme="dark"] {
+      --color: white;
+      --bgColor: black;
+      --border-color: white;
+    }
+
+    .info {
+      margin-left: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/antd@4.20.6/dist/antd.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { Switch  } = antd
+    class Card extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = {
+          dark: true,
+        }
+      }
+
+      handleOnClick = () => {
+        this.setState({
+          dark: !this.state.dark
+        })
+      }
+
+      render() {
+        return (
+          <div className="container" data-theme={this.state.dark ? 'dark' : 'light'}>
+            <div className="description">醉里挑灯看剑，梦回吹角连营。</div>
+            <div className="info">
+              ——辛弃疾
+            </div>
+            <div className="darkswitch">
+              黑暗模式：
+              <Switch 
+                defaultChecked={this.state.dark} 
+                onClick={this.handleOnClick} 
+              />
+            </div>
+          </div>
+        )
+      }
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("app"));
+    root.render(<Card />);
+  </script>
+</body>
+
+</html>
