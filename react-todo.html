@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>React</title>
+  <link rel="stylesheet" href="https://unpkg.com/antd@4.20.6/dist/antd.css">
+  <link rel="stylesheet" href="./todo.css">
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/antd@4.20.6/dist/antd.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+  <script type="text/babel">
+    class Header extends React.Component {
+
+      state = {
+        value: ''
+      }
+
+      handleOnChange = (e) => {
+        this.setState({
+          value: e.target.value
+        })
+      }
+
+      render() {
+        return (
+          <div className="task-header">
+            <div className="task-header-title">
+              今日任务
+            </div>
+            <div className="task-count">
+              {this.props.tasks} {this.props.tasks > 1 ? "tasks" : "task"}
+            </div>
+            <form 
+              onSubmit={(e) => { 
+                e.preventDefault()
+                this.props.onAdd(this.state.value)
+                this.setState({
+                  value: ''
+                })
+              }} 
+              className="task-form"
+            >
+              <input value={this.state.value} onChange={this.handleOnChange} type="text" placeholder="Add a new task" autoFocus className="task-input" />
+              <button className="task-button">Add Task</button>
+            </form>
+          </div>
+        )
+      }
+    }
+
+    class List extends React.Component {
+      renderEmpty = () => {
+        return (
+          <div className="task-empty">
+            无任务
+          </div>
+        )
+      }
+
+      render() {
+        return (
+          <div className="task-list">
+            {this.props.todos == 0 ? this.renderEmpty() : this.props.todos.map(task => {
+              return (
+                <div key={task.id} className={`task-item ${task.isCompleted ? "is-completed" : ""}`}>
+                  <input onChange={() => { this.props.onChange(task.id) }} type="checkbox" className="task-status" checked={task.isCompleted} />
+                  <label className="task-name">{task.name}</label>
+                  <button onClick={() => { this.props.onDelete(task.id) }} className="task-delete"></button>
+                </div>
+              )
+            })}
+          </div>
+        )
+      }
+    }
+
+    class TODO extends React.Component {
+
+      id = 0
+
+      state = {
+        todos: []
+      }
+
+      onChange = id => {
+        const { todos } = this.state
+        const newTodos = todos.map(task => {
+          if (task.id === id) {
+            task.isCompleted = !task.isCompleted
+          }
+          return task
+        })
+        this.setState({
+          todos: newTodos
+        })
+      }
+
+      onAdd = name => {
+        const { todos } = this.state
+        const newTodos = [...todos, {
+          id: this.id++,
+          name: name,
+          isCompleted: false
+        }]
+        this.setState({
+          todos: newTodos
+        })
+      }
+
+      onDelete = id => {
+        const { todos } = this.state
+        const newTodos = todos.filter(task => task.id !== id)
+        this.setState({
+          todos: newTodos
+        })
+      }
+
+      render() {
+        return (
+          <React.Fragment>
+            <Header onAdd={this.onAdd} tasks={this.state.todos.length} />
+            <List onDelete={this.onDelete} onChange={this.onChange} todos={this.state.todos} />
+          </React.Fragment>
+        )
+      }
+    }
+
+    
+    const root = ReactDOM.createRoot(document.getElementById("app"));
+    root.render(<TODO />);
+  </script>
+</body>
+
+</html>

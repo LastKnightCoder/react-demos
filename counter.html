@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Counter</title>
+  <link rel="stylesheet" href="https://unpkg.com/antd@4.20.6/dist/antd.css">
+  <style>
+    .container {
+      display: flex;
+      width: min-content;
+      margin-top: 1rem;
+      border: 1px solid rgba(156, 163, 175, 0.5);
+      border-radius: 0.375rem;
+    }
+    button {
+      padding: 0.5rem;
+      border: none;
+      border-right: 1px solid rgba(156, 163, 175, 0.5);
+      background-color: transparent;
+      cursor: pointer;
+      font-family: Consolas;
+    }
+    span {
+      padding: 0.5rem 0.75rem;
+      margin: auto;
+      font-family: Consolas;
+    }
+    span ~ button {
+      border: none;
+      border-left: 1px solid rgba(156, 163, 175, 0.5);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/antd@4.20.6/dist/antd.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { message } = antd
+    class Counter extends React.Component {
+      state = {
+        counter: 0,
+        dark: false
+      }
+
+      // addBtn = React.createRef()
+
+      // componentDidMount() {
+      //   // const addBtn = this.refs.addBtn
+      //   this.addBtn.current.addEventListener('click', () => {
+      //     console.log('click');
+      //     this.setState({
+      //       counter: this.state.counter + 1
+      //     })
+      //     message.info(this.state.counter)
+      //   })
+      // }
+
+      handleIncrement = () => {
+        // this.setState({
+        //   counter: this.state.counter + 1
+        // })
+        // message.info(this.state.counter)
+
+        // setTimeout
+        // setTimeout(() => {
+        //   this.setState({
+        //     counter: this.state.counter + 1
+        //   })
+        //   message.info(this.state.counter)
+        // }, 0)
+
+        // promise
+        // const sleep = async timeout => new Promise(resolve => setTimeout(resolve, timeout))
+        // await sleep(100)
+        // // 同步调用
+        // this.setState({
+        //   counter: this.state.counter + 1
+        // })
+        // // 显示的是最新值
+        // message.info(this.state.counter)
+        this.setState(state => {
+          return {
+            counter: state.counter + 1
+          }
+        }, () => {
+          console.log(this.state);
+        })
+        this.setState(state => {
+          return {
+            counter: state.counter + 1
+          }
+        }, () => {
+          console.log(this.state);
+        })
+      }
+
+      handleDecrement = () => {
+        this.setState({
+          counter: this.state.counter - 1
+        })
+        message.info(this.state.counter)
+      }
+
+      render() {
+        return (
+          <div className="container">
+            <button onClick={this.handleDecrement}>
+              -
+            </button>
+            <span>{ this.state.counter }</span>
+            <button onClick={this.handleIncrement}>
+              +
+            </button>
+          </div>  
+        )
+      }
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("app"));
+    root.render(<Counter />);
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="todo.css">
+</head>
+<body>
+  <div id="app">
+    <div class="task-header">
+      <div class="task-header-title">
+        今日任务
+      </div>
+      <div class="task-count">
+        3 tasks
+      </div>
+      <form class="task-form">
+        <input type="text" placeholder="Add a new task" autofocus class="task-input" />
+        <button class="task-button">Add Task</button>
+      </form>
+    </div>
+    
+    <div class="task-list">
+      <!-- <div class="task-empty">
+        Not Found a task
+      </div> -->
+      <div class="task-item is-completed">
+        <input type="checkbox" class="task-status">
+        <label class="task-name">Learn Vue</label>
+        <button class="task-delete"></button>
+      </div>
+      <div class="task-item">
+        <input type="checkbox" class="task-status">
+        <label class="task-name">Hello Vue</label>
+        <button class="task-delete"></button>
+      </div>
+      <div class="task-item">
+        <input type="checkbox" class="task-status">
+        <label class="task-name">Hello Vue</label>
+        <button class="task-delete"></button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

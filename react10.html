@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>React</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .todo-container {
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
+      padding: 20px;
+      width: 500px;
+      margin: 100px auto;
+    }
+    .todo-list-container {
+      margin: 10px 0;
+    }
+    .todo-item {
+      list-style-type: none;
+      display: flex;
+      gap: 10px;
+      height: 50px;
+      line-height: 50px;
+      padding: 10px;
+    }
+    .todo-item-checkbox {
+      display: block;
+      width: 20px;
+      height: 20px;
+      align-self: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+  <script type="text/babel">
+    class TODOList extends React.Component {
+        handleOnChange = (id, e) => {
+          const { todos } = this.state
+          const index = todos.findIndex(todo => todo.id === id)
+          const newTodos = [...todos]
+          newTodos[index].done = e.target.checked
+          this.setState({
+            todos: newTodos
+          })
+        }
+
+        render() {
+          return (
+            <div className="todo-list-container">
+              <ul>
+                {this.props.todos.map(todo => (
+                  <li key={todo.id} className='todo-item'>
+                    <input className='todo-item-checkbox' type="checkbox" onChange={(e) => {this.handleOnChange(todo.id, e)}} checked={todo.done} />
+                    <span>{todo.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        }
+      }
+
+      class TODOAdd extends React.Component {
+        state = {
+          text: ''
+        }
+
+        handleOnChange = (e) => {
+          this.setState({
+            text: e.target.value
+          })
+        }
+
+        handleOnSubmit = (e) => {
+          e.preventDefault()
+          const { text } = this.state
+          if (text.trim()) {
+            this.props.onAdd(text)
+            this.setState({
+              text: ''
+            })
+          }
+        }
+
+        render() {
+          return (
+            <form onSubmit={this.handleOnSubmit}>
+              <input type="text" value={this.state.text} onChange={this.handleOnChange} />
+              <button type="submit">Add</button>
+            </form>
+          )
+        }
+      }
+
+      class TODO extends React.Component {
+        state = {
+          todos: [{
+            id: 1,
+            text: 'Learn React',
+            done: true
+          }]
+        }
+
+        id = 0
+
+        handleOnAdd = (text) => {
+          const { todos } = this.state
+          const newTodos = [...todos]
+          newTodos.push({
+            id: this.id++,
+            text,
+            done: false
+          })
+          this.setState({
+            todos: newTodos
+          })
+        }
+
+        render() {
+          return (
+            <div className='todo-container'>
+              <TODOList todos={this.state.todos} />
+              <TODOAdd onAdd={this.handleOnAdd} />
+            </div>
+          )
+        }
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("app"));
+      root.render(<TODO />);
+    </script>
+</body>
+
+</html>
